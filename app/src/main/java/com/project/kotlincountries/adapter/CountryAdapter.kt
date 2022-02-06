@@ -6,6 +6,8 @@ import androidx.navigation.Navigation
 import androidx.recyclerview.widget.RecyclerView
 import com.project.kotlincountries.databinding.ItemCountryBinding
 import com.project.kotlincountries.model.CountryModel
+import com.project.kotlincountries.util.downloadFromUrl
+import com.project.kotlincountries.util.placeHolderProgressBar
 import com.project.kotlincountries.view.FeedFragmentDirections
 
 class CountryAdapter (val countryList : ArrayList<CountryModel>) : RecyclerView.Adapter<CountryAdapter.CountryViewHolder>(){
@@ -22,8 +24,9 @@ class CountryAdapter (val countryList : ArrayList<CountryModel>) : RecyclerView.
         holder.bind.apply {
             name.text = countryList[position].countryName
             region.text =  countryList[position].countryRegion
+            imageView.downloadFromUrl(countryList[position].imageURL, placeHolderProgressBar(root.context))
             linearView.setOnClickListener {
-                val action = FeedFragmentDirections.actionFeedFragmentToCountryFragment()
+                val action = FeedFragmentDirections.actionFeedFragmentToCountryFragment(countryList[position].uuid)
                 Navigation.findNavController(it).navigate(action)
             }
         }
